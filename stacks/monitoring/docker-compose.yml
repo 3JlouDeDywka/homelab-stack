@@ -1,3 +1,5 @@
+x-required-ntfy-token: ${NTFY_TOKEN:?NTFY_TOKEN is required}
+
 services:
   prometheus:
     image: prom/prometheus:v2.54.1

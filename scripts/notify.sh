@@ -11,6 +11,11 @@ title="$2"
 message="$3"
 priority="${4:-default}"
 
+if [[ ! "$topic" =~ ^[A-Za-z0-9._-]+$ ]]; then
+  echo "ERROR: Topic may contain only letters, numbers, dot, underscore, and hyphen." >&2
+  exit 1
+fi
+
 if [[ "$title" == *$'\n'* || "$title" == *$'\r'* || "$priority" == *$'\n'* || "$priority" == *$'\r'* ]]; then
   echo "ERROR: Title and priority must not contain newlines." >&2
   exit 1

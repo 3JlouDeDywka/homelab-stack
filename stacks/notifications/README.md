@@ -22,11 +22,11 @@ NTFY_TOKEN=tk_xxxxxxxxxxxxxxxxx
 
 Do not commit real passwords or tokens.
 
-Create an ntfy administrator and access token:
+Create an ntfy administrator for initial administration if needed:
 
 ```bash
 docker exec -it ntfy ntfy user add --role=admin admin
-docker exec -it ntfy ntfy token add admin
+
 ```
 
 Start the notification stack:
@@ -64,6 +64,16 @@ scripts/notify.sh homelab-test "Test" "Hello World"
 ## Alertmanager
 
 Alertmanager and ntfy share the Docker `proxy` network.
+
+For Alertmanager, use a dedicated least-privilege publisher account:
+
+```bash
+docker exec -it ntfy ntfy user add alertmanager
+docker exec -it ntfy ntfy access alertmanager homelab-alerts wo
+docker exec -it ntfy ntfy token add alertmanager
+```
+
+Set `NTFY_TOKEN` to the token created for the `alertmanager` user. This account can publish only to the `homelab-alerts` topic.
 
 `config/alertmanager/alertmanager.yml` sends firing and resolved alerts to the
 `homelab-alerts` ntfy topic.
