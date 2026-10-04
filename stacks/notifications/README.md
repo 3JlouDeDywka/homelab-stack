@@ -8,7 +8,7 @@ Self-hosted notification stack for the homelab.
 |---|---|---|
 | ntfy | `binwiederhier/ntfy:v2.11.0` | Primary push notification server |
 | Gotify | `gotify/server:2.5.0` | Backup push notification service |
-| Apprise | `caronc/apprise:v1.1.6` | Multi-channel notification gateway |
+| Apprise | `caronc/apprise:v1.5.4` | Multi-channel notification gateway |
 
 ## Setup
 
