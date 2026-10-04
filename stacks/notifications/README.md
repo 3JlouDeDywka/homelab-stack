@@ -60,6 +60,22 @@ scripts/notify.sh homelab-test "Test" "Hello World"
 
 `NTFY_URL` can override the default `https://ntfy.${DOMAIN}` endpoint.
 
+## Local testing / healthcheck
+
+For local development and integration tests, the ntfy service in the compose
+file is exposed on a local HTTP port that the test script and healthcheck use:
+
+- Local test/healthcheck URL: http://localhost:2586
+
+You can override the default production URL to point at a local ntfy instance:
+
+    export NTFY_URL=http://localhost:2586
+    scripts/notify.sh homelab-test "Test" "Hello World"
+
+Use plain HTTP (http://localhost:2586) only for local/dev/test scenarios.
+For production, continue to use HTTPS and the DOMAIN/NTFY_TOKEN approach
+described elsewhere in this README.
+
 Use an integration-specific `NTFY_TOKEN` with write access only to the topic(s) the script needs. Do not reuse the Alertmanager-only token for unrelated topics.
 
 ## Alertmanager
