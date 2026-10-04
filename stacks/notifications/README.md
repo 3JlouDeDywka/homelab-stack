@@ -22,17 +22,16 @@ NTFY_TOKEN=tk_xxxxxxxxxxxxxxxxx
 
 Do not commit real passwords or tokens.
 
-Create an ntfy administrator for initial administration if needed:
-
-```bash
-docker exec -it ntfy ntfy user add --role=admin admin
-
-```
-
 Start the notification stack:
 
 ```bash
 docker compose -f stacks/notifications/docker-compose.yml up -d
+```
+
+Create an ntfy administrator for initial administration if needed:
+
+```bash
+docker exec -it ntfy ntfy user add --role=admin admin
 ```
 
 Services are available through Traefik at:
@@ -74,6 +73,13 @@ docker exec -it ntfy ntfy token add alertmanager
 ```
 
 Set `NTFY_TOKEN` to the token created for the `alertmanager` user. This account can publish only to the `homelab-alerts` topic.
+
+Before starting Alertmanager, require a non-empty token:
+
+```bash
+: "${NTFY_TOKEN:?NTFY_TOKEN is required}"
+docker compose -f stacks/monitoring/docker-compose.yml up -d alertmanager
+```
 
 `config/alertmanager/alertmanager.yml` sends firing and resolved alerts to the
 `homelab-alerts` ntfy topic.
@@ -172,6 +178,12 @@ The initial administrator password comes from `GOTIFY_PASSWORD`.
 
 Create a Gotify application in the web UI to obtain an application token for
 clients that need Gotify.
+
+## China network
+
+For mainland China, run `./scripts/setup-cn-mirrors.sh` before pulling the notification images. The repository already provides `CN_MODE`, `CN_DOCKER_MIRROR`, `HTTP_PROXY`, and `HTTPS_PROXY` settings for mirror/proxy configuration.
+
+Docker image pulls are performed by the Docker engine, so configure the Docker registry mirror or daemon proxy before running `docker compose pull` or `docker compose up`.
 
 ## Acceptance checks
 
