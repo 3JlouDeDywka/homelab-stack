@@ -11,6 +11,11 @@ title="$2"
 message="$3"
 priority="${4:-default}"
 
+if [[ "$title" == *$'\n'* || "$title" == *$'\r'* || "$priority" == *$'\n'* || "$priority" == *$'\r'* ]]; then
+  echo "ERROR: Title and priority must not contain newlines." >&2
+  exit 1
+fi
+
 if [ -n "${NTFY_URL:-}" ]; then
   base_url="${NTFY_URL%/}"
 elif [ -n "${DOMAIN:-}" ]; then
