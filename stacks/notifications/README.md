@@ -60,6 +60,8 @@ scripts/notify.sh homelab-test "Test" "Hello World"
 
 `NTFY_URL` can override the default `https://ntfy.${DOMAIN}` endpoint.
 
+Use an integration-specific `NTFY_TOKEN` with write access only to the topic(s) the script needs. Do not reuse the Alertmanager-only token for unrelated topics.
+
 ## Alertmanager
 
 Alertmanager and ntfy share the Docker `proxy` network.
@@ -109,6 +111,16 @@ After an update, verify that the `watchtower` topic receives a notification.
 
 ## Gitea
 
+Create a dedicated least-privilege publisher:
+
+```bash
+docker exec -it ntfy ntfy user add gitea
+docker exec -it ntfy ntfy access gitea gitea wo
+docker exec -it ntfy ntfy token add gitea
+```
+
+Use the returned token as `GITEA_NTFY_TOKEN`.
+
 Open:
 
 `Settings -> Webhooks -> Add Webhook -> Gitea`
@@ -118,7 +130,7 @@ Configure:
 - Target URL: `https://ntfy.${DOMAIN}/gitea`
 - HTTP method: `POST`
 - POST content type: `application/json`
-- Authorization Header: `Bearer <NTFY_TOKEN>`
+- Authorization Header: `Bearer <GITEA_NTFY_TOKEN>`
 - Select the required repository events
 - Enable the webhook
 
